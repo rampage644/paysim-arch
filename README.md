@@ -38,7 +38,7 @@ head -n10000 PS_20174392719_1491204439457_log.csv > PS_20174392719_1491204439457
 
 # run kafka
 cd task2/
-git@github.com:wurstmeister/kafka-docker.git
+git clone git@github.com:wurstmeister/kafka-docker.git
 cd kafka-docker/
 # first, change IP in docker-compose-single-broker for docker host address (ex, 172.17.0.1)
 docker-compose -f docker-compose-single-broker.yml up -d
@@ -110,6 +110,14 @@ Hadoop by default has 3x replication ratio, so, storage capacity triples to 75G.
 Let's assume (to make numbers look significant) we have 30% yearly growth, then for 10 years 1.34TB (100G * 1.3 ^ 10) of storage space will be needed. How about 5-6 AWS H1 instances (up to 16TB of storage each)? Should be enough in terms of space. Those also come with 32/64/128/256 RAM in case one wants to share cluster resources with compute-intensive applications, like Spark.
 
 For master nodes, there is no storage requirements so almost any decent configutartion would suffice.
+
+```
+cd task4/
+sbt package
+/opt/apache-spark/bin/spark-submit --class 'Ingest' --master 'local[4]' --executor-memory 4G target/scala-2.11/ingest_2.11-1.0.jar  ../PS_20174392719_1491204439457_log.csv
+```
+
+
 
 ![Hadoop diagram](task4/arch4.png)
 
